@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'screens/content_view.dart';
 
 void main() {
   runApp(const FavoritesApp());
@@ -11,7 +12,7 @@ class FavoritesApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: Scaffold(),
+      home: ContentView(),
     );
   }
 }
