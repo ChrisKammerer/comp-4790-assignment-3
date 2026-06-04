@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import '/widgets/city_card.dart';
 import '/widgets/hobby_card.dart';
 import '/data/sample_data.dart';
+import 'package:provider/provider.dart';
+import '../providers/favorite_provider.dart';
 
 enum ContentCategory { cities, hobbies, books }
 
@@ -20,6 +22,10 @@ class _BrowseScreenState extends State<BrowseScreen> {
 
   @override
   Widget build(BuildContext context) {
+
+    final favoritesProvider = Provider.of<FavoritesProvider>(context);
+
+
     return Scaffold(
       body: SafeArea(
         child: Padding(
@@ -70,9 +76,9 @@ class _BrowseScreenState extends State<BrowseScreen> {
                     switch (selectedCategory) {
                       case ContentCategory.cities:
                         return ListView.builder(
-                          itemCount: sampleCities.length,
+                          itemCount: favoritesProvider.cities.length,
                           itemBuilder: (context, index) {
-                            final city = sampleCities[index];
+                            final city = favoritesProvider.cities[index];
                             return CityCard(city: city);
                           },
                         );

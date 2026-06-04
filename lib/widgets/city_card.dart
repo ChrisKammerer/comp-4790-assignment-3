@@ -1,5 +1,7 @@
 import 'package:favorites/models/city_model.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import '../providers/favorite_provider.dart';
 
 class CityCard extends StatelessWidget {
   final CityModel city;
@@ -27,7 +29,16 @@ class CityCard extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(city.cityName),
-                Icon(city.isFavorite ? Icons.favorite : Icons.favorite_border)
+                IconButton(
+                  onPressed: () {
+                    context.read<FavoritesProvider>()
+                    .toggleCityFavorite(city.id);
+                  },
+                  icon: Icon(city.isFavorite ?
+                  Icons.favorite :
+                  Icons.favorite_border)
+
+                )
               ]
             )
           )

@@ -1,5 +1,7 @@
 import 'package:favorites/models/hobby_model.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import '../providers/favorite_provider.dart';
 
 class HobbyCard extends StatelessWidget {
   final HobbyModel hobby;
@@ -11,7 +13,15 @@ class HobbyCard extends StatelessWidget {
       child: ListTile(
         leading: Text(hobby.hobbyIcon, style: TextStyle(fontSize: 24)),
         title: Text(hobby.hobbyName),
-        trailing: Icon(hobby.isFavorite ? Icons.favorite : Icons.favorite_border)
+        trailing: IconButton(
+          onPressed: () {
+            context.read<FavoritesProvider>()
+            .toggleHobbyFavorite(hobby.id);
+          },
+          icon: Icon(hobby.isFavorite ?
+          Icons.favorite :
+          Icons.favorite_border)
+        )
       )
     );
   }
