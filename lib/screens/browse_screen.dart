@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '/widgets/city_card.dart';
+import '/widgets/hobby_card.dart';
 import '/data/sample_data.dart';
 
 enum ContentCategory { cities, hobbies, books }
@@ -76,8 +77,12 @@ class _BrowseScreenState extends State<BrowseScreen> {
                           },
                         );
                       case ContentCategory.hobbies:
-                        return Center(
-                          child: Text("Hobbies coming soon")
+                        return ListView.builder(
+                          itemCount: sampleHobbies.length,
+                          itemBuilder: (context, index) {
+                            final hobby = sampleHobbies[index];
+                            return HobbyCard(hobby: hobby);
+                          },
                         );
                       case ContentCategory.books:
                         return Center(
