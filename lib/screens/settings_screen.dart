@@ -22,19 +22,31 @@ class SettingsScreen extends StatelessWidget {
               fontWeight: FontWeight.bold
             )
             ),
-            SizedBox(height: 24),
+            SizedBox(height: 48),
 
-            Row(
+            Column(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text("Dark Mode",
-                style: TextStyle(
-                  fontSize: 18
-                )),
-                Switch(value: favoritesProvider.isDarkMode,
-                onChanged: (value) {
-                  favoritesProvider.toggleDarkMode(value);
-                })
+                Card(
+                  child: ListTile(
+                    leading: Icon(Icons.dark_mode),
+                    title: Text("Dark Mode"),
+                    trailing: Switch(value: favoritesProvider.isDarkMode,
+                    onChanged: (value) {
+                      favoritesProvider.toggleDarkMode(value);
+                    })
+                  ),
+                )
+
+              //   Text("Dark Mode",
+              //   style: TextStyle(
+              //     fontSize: 18
+              //   )),
+              //   Switch(value: favoritesProvider.isDarkMode,
+              //   onChanged: (value) {
+              //     favoritesProvider.toggleDarkMode(value);
+                // }
+                
               ]
             )
           ]

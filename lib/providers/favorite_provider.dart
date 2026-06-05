@@ -9,6 +9,7 @@ class FavoritesProvider extends ChangeNotifier {
 
   FavoritesProvider() {
     loadFavorites();
+    loadDarkModePreference();
   }
 
   Future<void> saveFavorites() async {
@@ -26,7 +27,6 @@ class FavoritesProvider extends ChangeNotifier {
 
     await prefs.setStringList("favoriteCities", favoriteCityIDs);
     await prefs.setStringList("favoriteHobbies", favoriteHobbyIDs);
-
   }
 
   Future<void> loadFavorites() async {
@@ -43,6 +43,30 @@ class FavoritesProvider extends ChangeNotifier {
       hobby.isFavorite = favoriteHobbyIDs.contains(hobby.id.toString());
     }
 
+    notifyListeners();
+  }
+
+  Future<void> saveDarkModePreference() async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setBool("isDarkMode", isDarkMode);
+  }
+
+  Future<void> loadDarkModePreference() async {
+    final prefs = await SharedPreferences.getInstance();
+    isDarkMode = prefs.getBool("isDarkMode") ?? false;
+    notifyListeners();
+  }
+
+  Future<void> clearFavorites() async {
+    for (final city in cities) {
+      city.isFavorite = false;
+    }
+
+    for (final hobby in hobbies) {
+      hobby.isFavorite = false;
+    }
+
+    saveFavorites();
     notifyListeners();
   }
 
@@ -66,6 +90,7 @@ class FavoritesProvider extends ChangeNotifier {
 
   void toggleDarkMode(bool value) {
     isDarkMode = value;
+    saveDarkModePreference();
     notifyListeners();
   }
 }
