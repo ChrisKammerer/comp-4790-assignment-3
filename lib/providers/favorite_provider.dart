@@ -14,21 +14,33 @@ class FavoritesProvider extends ChangeNotifier {
   Future<void> saveFavorites() async {
     final prefs = await SharedPreferences.getInstance();
 
-    final favoriteIDs = cities
+    final favoriteCityIDs = cities
     .where((city) => city.isFavorite)
     .map((city) => city.id.toString())
     .toList();
 
-    await prefs.setStringList("favoriteCities", favoriteIDs);
+    final favoriteHobbyIDs = hobbies
+    .where((hobby) => hobby.isFavorite)
+    .map((hobby) => hobby.id.toString())
+    .toList();
+
+    await prefs.setStringList("favoriteCities", favoriteCityIDs);
+    await prefs.setStringList("favoriteHobbies", favoriteHobbyIDs);
+
   }
 
   Future<void> loadFavorites() async {
     final prefs = await SharedPreferences.getInstance();
 
-    final favoriteIDs = prefs.getStringList('favoriteCities') ?? []; 
+    final favoriteCityIDs = prefs.getStringList('favoriteCities') ?? []; 
+    final favoriteHobbyIDs = prefs.getStringList('favoriteHobbies') ?? [];
 
     for(final city in cities) {
-      city.isFavorite = favoriteIDs.contains(city.id.toString());
+      city.isFavorite = favoriteCityIDs.contains(city.id.toString());
+    }
+
+    for(final hobby in hobbies) {
+      hobby.isFavorite = favoriteHobbyIDs.contains(hobby.id.toString());
     }
 
     notifyListeners();
@@ -46,11 +58,14 @@ class FavoritesProvider extends ChangeNotifier {
   void toggleHobbyFavorite(int hobbyId) {
     final hobby = hobbies.firstWhere((hobby) => hobby.id == hobbyId);
     hobby.isFavorite = !hobby.isFavorite;
+
+    saveFavorites(); 
+
     notifyListeners();
   }
 
   void toggleDarkMode(bool value) {
-    isDarkMode = true;
+    isDarkMode = value;
     notifyListeners();
   }
 }
