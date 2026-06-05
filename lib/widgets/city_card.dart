@@ -28,7 +28,11 @@ class CityCard extends StatelessWidget {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text(city.cityName),
+                Text(city.cityName,
+                style: TextStyle(
+                  color: Colors.black,
+                  fontSize: 18
+                )),
                 IconButton(
                   onPressed: () {
                     context.read<FavoritesProvider>()
@@ -36,7 +40,8 @@ class CityCard extends StatelessWidget {
                   },
                   icon: Icon(city.isFavorite ?
                   Icons.favorite :
-                  Icons.favorite_border)
+                  Icons.favorite_border,
+                  color: city.isFavorite ? Colors.red : Colors.black45)
 
                 )
               ]

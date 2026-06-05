@@ -14,10 +14,23 @@ class FavoritesApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
       create: (context) => FavoritesProvider(),
-      child: MaterialApp(
-        debugShowCheckedModeBanner: false,
-        home: ContentView(),
-      ),
+      child: Consumer<FavoritesProvider>(
+        builder: (context, favoritesProvider, child) {
+          return MaterialApp(
+          debugShowCheckedModeBanner: false,
+          theme: ThemeData(
+            brightness: Brightness.light,
+            scaffoldBackgroundColor: Colors.white
+          ),
+          darkTheme: ThemeData(
+            brightness: Brightness.dark,
+            scaffoldBackgroundColor: Colors.black
+          ),
+          themeMode: favoritesProvider.isDarkMode ? ThemeMode.dark : ThemeMode.light,
+          home: ContentView(),
+        );
+      })
+
     );
   }
 }
