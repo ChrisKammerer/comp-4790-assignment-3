@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '/widgets/city_card.dart';
 import '/widgets/hobby_card.dart';
+import '/widgets/book_card.dart';
 import '/data/sample_data.dart';
 import 'package:provider/provider.dart';
 import '../providers/favorite_provider.dart';
@@ -64,7 +65,9 @@ class _BrowseScreenState extends State<BrowseScreen> {
                   ),
                 ),
                 onChanged: (value) {
-                  searchText = value;
+                  setState(() {
+                    searchText = value;
+                  });
                 },
               ),
 
@@ -75,24 +78,43 @@ class _BrowseScreenState extends State<BrowseScreen> {
                   builder: (context) {
                     switch (selectedCategory) {
                       case ContentCategory.cities:
+                        final filteredCities = favoritesProvider.cities
+                            .where((city) => city.cityName
+                                .toLowerCase()
+                                .contains(searchText.toLowerCase()))
+                            .toList();
                         return ListView.builder(
-                          itemCount: favoritesProvider.cities.length,
+                          itemCount: filteredCities.length,
                           itemBuilder: (context, index) {
-                            final city = favoritesProvider.cities[index];
+                            final city = filteredCities[index];
                             return CityCard(city: city);
                           },
                         );
                       case ContentCategory.hobbies:
+                        final filteredHobbies = favoritesProvider.hobbies
+                            .where((hobby) => hobby.hobbyName
+                                .toLowerCase()
+                                .contains(searchText.toLowerCase()))
+                            .toList();
                         return ListView.builder(
-                          itemCount: sampleHobbies.length,
+                          itemCount: filteredHobbies.length,
                           itemBuilder: (context, index) {
-                            final hobby = sampleHobbies[index];
+                            final hobby = filteredHobbies[index];
                             return HobbyCard(hobby: hobby);
                           },
                         );
                       case ContentCategory.books:
-                        return Center(
-                          child: Text("Books coming soon")
+                        final filteredBooks = favoritesProvider.books
+                            .where((book) => book.bookTitle
+                                .toLowerCase()
+                                .contains(searchText.toLowerCase()))
+                            .toList();
+                        return ListView.builder(
+                          itemCount: filteredBooks.length,
+                          itemBuilder: (context, index) {
+                            final book = filteredBooks[index];
+                            return BookCard(book: book);
+                          },
                         );
                     }
                   },

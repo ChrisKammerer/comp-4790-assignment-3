@@ -5,6 +5,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 class FavoritesProvider extends ChangeNotifier {
   final cities = sampleCities;
   final hobbies = sampleHobbies;
+  final books = sampleBooks;
   bool isDarkMode = false;
 
   FavoritesProvider() {
@@ -25,8 +26,14 @@ class FavoritesProvider extends ChangeNotifier {
     .map((hobby) => hobby.id.toString())
     .toList();
 
+    final favoriteBookIDs = books
+    .where((book) => book.isFavorite)
+    .map((book) => book.id.toString())
+    .toList();
+
     await prefs.setStringList("favoriteCities", favoriteCityIDs);
     await prefs.setStringList("favoriteHobbies", favoriteHobbyIDs);
+    await prefs.setStringList("favoriteBooks", favoriteBookIDs);
   }
 
   Future<void> loadFavorites() async {
@@ -34,13 +41,17 @@ class FavoritesProvider extends ChangeNotifier {
 
     final favoriteCityIDs = prefs.getStringList('favoriteCities') ?? []; 
     final favoriteHobbyIDs = prefs.getStringList('favoriteHobbies') ?? [];
-
+    final favoriteBookIDs = prefs.getStringList('favoriteBooks') ?? [];
     for(final city in cities) {
       city.isFavorite = favoriteCityIDs.contains(city.id.toString());
     }
 
     for(final hobby in hobbies) {
       hobby.isFavorite = favoriteHobbyIDs.contains(hobby.id.toString());
+    }
+
+    for(final book in books) {
+      book.isFavorite = favoriteBookIDs.contains(book.id.toString());
     }
 
     notifyListeners();
@@ -66,6 +77,10 @@ class FavoritesProvider extends ChangeNotifier {
       hobby.isFavorite = false;
     }
 
+    for (final book in books) {
+      book.isFavorite = false;
+    }
+
     saveFavorites();
     notifyListeners();
   }
@@ -84,6 +99,15 @@ class FavoritesProvider extends ChangeNotifier {
     hobby.isFavorite = !hobby.isFavorite;
 
     saveFavorites(); 
+
+    notifyListeners();
+  }
+
+  void toggleBookFavorite(int bookId) {
+    final book = books.firstWhere((book) => book.id == bookId);
+    book.isFavorite = !book.isFavorite;
+
+    saveFavorites();
 
     notifyListeners();
   }

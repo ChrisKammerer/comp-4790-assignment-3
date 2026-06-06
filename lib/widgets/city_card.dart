@@ -11,7 +11,7 @@ class CityCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       height: 150,
-      margin: EdgeInsets.only(bottom: 8),
+      margin: EdgeInsets.only(bottom: 0),
       child: Stack(
         children: [
           ClipRRect(
