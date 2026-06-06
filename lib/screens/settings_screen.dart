@@ -36,17 +36,31 @@ class SettingsScreen extends StatelessWidget {
                       favoritesProvider.toggleDarkMode(value);
                     })
                   ),
+                ),
+                SizedBox(height: 16),
+                Card(
+                  child: ListTile(
+                    title: Text("Clear Favorites", style: TextStyle(color: Colors.red), textAlign: TextAlign.center),
+                    onTap: () {
+                      showDialog(context: context, builder: (context) {
+                        return AlertDialog(
+                          title: Text("Clear Favorites"),
+                          content: Text("Are you sure you want to clear all favorites? This action cannot be undone."),
+                          actions: [
+                            TextButton(onPressed: () {
+                              Navigator.pop(context);
+                            }, child: Text("Cancel")),
+                            TextButton(onPressed: () {
+                              favoritesProvider.clearFavorites();
+                              Navigator.pop(context);
+                            }, child: Text("Clear", style: TextStyle(color: Colors.red)))
+                          ],
+                        );
+                    }
+                    );
+                  }
                 )
-
-              //   Text("Dark Mode",
-              //   style: TextStyle(
-              //     fontSize: 18
-              //   )),
-              //   Switch(value: favoritesProvider.isDarkMode,
-              //   onChanged: (value) {
-              //     favoritesProvider.toggleDarkMode(value);
-                // }
-                
+                )
               ]
             )
           ]
